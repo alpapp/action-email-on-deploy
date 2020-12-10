@@ -39,13 +39,16 @@ async function main() {
 
 
         // now get branch we deployed on
-        const deployedBranch = (await execShellCommand('git name-rev --name-only --exclude=tags/* ' + process.env.GITHUB_SHA)).trim()
+        // const deployedBranch = (await execShellCommand('git name-rev --name-only --exclude=tags/* ' + process.env.GITHUB_SHA)).trim()
 
+        const deployedBranch = (await execShellCommand("git log --graph --pretty='%D' --date=short -1'")).trim()
+
+        console.log('deployedBranch is ' + deployedBranch)
 
         // console.dir(github.context, {depth: null})
+        //git branch -r | grep -v HEAD | while read b; do git log --color --format="%ci _%C(magenta)%cr %C(bold cyan)$b%Creset %s %C(bold blue)<%an>%Creset" $b | head -n 1; done | sort -r | cut -d_ -f2- | sed 's;origin/;;g' | head -10
         
-        
-        
+        /*
 
         
 
@@ -116,7 +119,7 @@ async function main() {
             console.dir(emailData, {depth: null})
         }
 
-
+*/
 
 
     } catch (error) {
