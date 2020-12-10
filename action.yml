@@ -1,6 +1,9 @@
 name: Email on deploy
 description: Send email on deploy success or failure
 inputs:
+  path_to_package_json:
+    description: Path to package.json file in repo
+    default: './package.json'
   mailjet_public:
     description: Mailjet Public Key
     required: true

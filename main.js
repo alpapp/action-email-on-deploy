@@ -1,5 +1,6 @@
 const core = require("@actions/core");
 const github = require('@actions/github');
+const fs = require("fs");
 
 
 async function main() {
@@ -10,6 +11,8 @@ async function main() {
         console.log('payload is ', payload)
 
 
+
+        const pathToPackageJson = core.getInput("path_to_package_json")
         const mjPublic = core.getInput("mailjet_public", { required: true })
         const mjPrivate = core.getInput("mailjet_private", { required: true })
         const fromEmail = core.getInput("from_email", { required: true })
@@ -26,6 +29,11 @@ async function main() {
 
 
 
+        // get package.json of the calling repo, to get the description of the project
+        const filePackageDotJson = fs.readFileSync(pathToPackageJson, "utf8")
+
+
+
         const mailjet = require ('node-mailjet').connect(mjPublic, mjPrivate)
         const mjRequest = mailjet.post("send", {'version': 'v3.1'})
         let emailData = {
@@ -37,7 +45,7 @@ async function main() {
                     },
                     "To": sendToJson[deployState].map(e => ({"Email": e})),
                     'Subject': "Test From action!",
-                    "TextPart": "This is the test content from the action:" + payload
+                    "TextPart": "This is the test content from the action:" + filePackageDotJson
                 }
             ]
         }
@@ -57,3 +65,7 @@ async function main() {
 }
 
 main()
+
+
+// to delete tag by command line:
+// git push --delete origin v1
