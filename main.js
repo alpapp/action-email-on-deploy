@@ -36,7 +36,7 @@ async function main() {
         const appCommitString = (await execShellCommand('git log -1 --format=%s')).trim()
         console.log('appCommitString is ' + appCommitString)
 
-        console.dir(github.event, {depth: null})
+        console.dir(github.context, {depth: null})
         
         
         
