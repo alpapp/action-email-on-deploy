@@ -3,6 +3,19 @@ const github = require('@actions/github');
 const fs = require("fs");
 
 
+function execShellCommand(cmd) {
+    const exec = require('child_process').exec;
+    return new Promise((resolve, reject) => {
+     exec(cmd, (error, stdout, stderr) => {
+      if (error) {
+       console.warn(error);
+      }
+      resolve(stdout? stdout : stderr);
+     });
+    });
+}
+
+
 async function main() {
     try {
 
@@ -16,8 +29,13 @@ async function main() {
         console.dir(JSON.parse(payload), {depth: null})
 
 
-        const latestCommitMessage = core.getInput("commit_message")
-        console.log('latest commit message is ' + latestCommitMessage)
+        // const latestCommitMessage = core.getInput("commit_message")
+        // console.log('latest commit message is ' + latestCommitMessage)
+
+        // const semverRegex = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
+        const appCommitString = (await execShellCommand('git log -1 --format=%s')).trim()
+        console.log('appCommitString is ' + appCommitString)
+        
         
 
 
