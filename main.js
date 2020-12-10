@@ -29,7 +29,7 @@ async function main() {
                     },
                     "To": "chris@siliconflight.com",
                     'Subject': "Test From action!",
-                    "TextPart": "This is the test content from the action:" + payload
+                    "TextPart": "This is the test content from the action:" //+ payload
                 }
             ]
         }
@@ -40,6 +40,7 @@ async function main() {
         } catch(err) {
             // can't do anything about it, tough
             console.log('error sending email', emailData, err)
+            console.dir(emailData, {depth: null})
         }
         console.log(info)
     } catch (error) {
