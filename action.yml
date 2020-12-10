@@ -1,0 +1,18 @@
+name: Email on deploy
+description: Send email on deploy success or failure
+inputs:
+  mjPublic:
+    description: Mailjet Public Key
+    required: true
+  mjPrivate:
+    description: Mailjet Private Key
+    required: true
+  from_email:
+    description: Email address to use as the sender
+    required: true
+  from_name:
+    description: Name of sender
+    required: true
+runs:
+  using: node12
+  main: main.js
