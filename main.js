@@ -37,6 +37,11 @@ async function main() {
         const deployedVersion = (await execShellCommand('git log -1 --format=%s')).trim()
         console.log('deployedVersion is ' + deployedVersion)
 
+
+        // now get branch we deployed on
+        const deployedBranch = (await execShellCommand('git name-rev --name-only --exclude=tags/* ' + process.env.GITHUB_SHA)).trim()
+
+
         // console.dir(github.context, {depth: null})
         
         
@@ -94,7 +99,7 @@ async function main() {
                     }),
                     'Subject': deployState == 'success' ? `New Version of ${filePackageDotJson.description} [v${deployedVersion}] now live` : `FAILED deployment for ${filePackageDotJson.description} ${deployedVersion}`,
                     "TextPart": deployState == 'success' ? `
-                        Version ${deployedVersion} of ${filePackageDotJson.description} has been successfully deployed at ${payload.deployment_status.updated_at_asDate} and is now live to use.
+                        Version ${deployedVersion} (branch ${deployedBranch}) of ${filePackageDotJson.description} has been successfully deployed at ${payload.deployment_status.updated_at_asDate} and is now live to use.
                     ` : `
                         FAILED to deploy version ${deployedVersion} of ${filePackageDotJson.description}.  Check for errors in build log.  Previously deployed version remains the current live version.
                     `,
