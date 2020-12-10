@@ -34,7 +34,7 @@ async function main() {
 
         // const semverRegex = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
         const appCommitString = (await execShellCommand('git log -1 --format=%s')).trim()
-        console.log('appCommitString is ' + appCommitString + '/' + github.event.head_commit.message)
+        console.log('appCommitString is ' + appCommitString)
 
         console.dir(github.event, {depth: null})
         
