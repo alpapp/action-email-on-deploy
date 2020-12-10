@@ -14,6 +14,8 @@ async function main() {
         const mjPrivate = core.getInput("mailjet_private", { required: true })
         const fromEmail = core.getInput("from_email", { required: true })
         const fromName = core.getInput("from_name", { required: true })
+
+        console.log(`fromEmail is ${fromEmail} and fromName is ${fromName}`)
         
 
         const mailjet = require ('node-mailjet').connect(mjPublic, mjPrivate)
@@ -22,8 +24,8 @@ async function main() {
             "Messages": [
                 {
                     "From": {
-                        "Email": fromEmail,
-                        "Name": fromName
+                        "Email": "app@airlineprep.co.uk",
+                        "Name": "AirlinePrep"
                     },
                     "To": "chris@siliconflight.com",
                     'Subject': "Test From action!",
