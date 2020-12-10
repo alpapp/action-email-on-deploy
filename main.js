@@ -41,7 +41,7 @@ async function main() {
         // now get branch we deployed on
         // const deployedBranch = (await execShellCommand('git name-rev --name-only --exclude=tags/* ' + process.env.GITHUB_SHA)).trim()
 
-        const deployedBranch = (await execShellCommand(/*"git log --graph --pretty='%D' --date=short -1"*/ "git log -1")).trim()
+        const deployedBranch = (await execShellCommand(/*"git log --graph --pretty='%D' --date=short -1"*/ "git branch --sort=-committerdate")).trim()
         console.log('deployedBranch is ' + deployedBranch)
 
         // console.dir(github.context, {depth: null})
