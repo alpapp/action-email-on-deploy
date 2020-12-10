@@ -41,13 +41,13 @@ async function main() {
         // now get branch we deployed on
         // const deployedBranch = (await execShellCommand('git name-rev --name-only --exclude=tags/* ' + process.env.GITHUB_SHA)).trim()
 
-        const deployedBranch = (await execShellCommand(/*"git log --graph --pretty='%D' --date=short -1"*/ "git branch --sort=-committerdate")).trim()
-        console.log('deployedBranch is ' + deployedBranch)
+        // const deployedBranch = (await execShellCommand(/*"git log --graph --pretty='%D' --date=short -1"*/ "git branch --sort=-committerdate")).trim()
+        // console.log('deployedBranch is ' + deployedBranch)
 
         // console.dir(github.context, {depth: null})
         //git branch -r | grep -v HEAD | while read b; do git log --color --format="%ci _%C(magenta)%cr %C(bold cyan)$b%Creset %s %C(bold blue)<%an>%Creset" $b | head -n 1; done | sort -r | cut -d_ -f2- | sed 's;origin/;;g' | head -10
         
-        /*
+        
 
         
 
@@ -64,6 +64,8 @@ async function main() {
 
 
         const deployState = payload.deployment_status.state;
+
+        const deployedEnvironment = payload.deployment_status.environment;
        
 
 
@@ -101,7 +103,7 @@ async function main() {
                     }),
                     'Subject': deployState == 'success' ? `New Version of ${filePackageDotJson.description} [v${deployedVersion}] now live` : `FAILED deployment for ${filePackageDotJson.description} ${deployedVersion}`,
                     "TextPart": deployState == 'success' ? `
-                        Version ${deployedVersion} (branch ${deployedBranch}) of ${filePackageDotJson.description} has been successfully deployed at ${payload.deployment_status.updated_at_asDate} and is now live to use.
+                        Version ${deployedVersion} (${deployedEnvironment}) of ${filePackageDotJson.description} has been successfully deployed at ${payload.deployment_status.updated_at_asDate} and is now live to use.
                     ` : `
                         FAILED to deploy version ${deployedVersion} of ${filePackageDotJson.description}.  Check for errors in build log.  Previously deployed version remains the current live version.
                     `,
@@ -118,7 +120,7 @@ async function main() {
             console.dir(emailData, {depth: null})
         }
 
-*/
+
 
 
     } catch (error) {
