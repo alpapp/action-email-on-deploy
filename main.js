@@ -27,9 +27,11 @@ async function main() {
                         "Email": fromEmail,
                         "Name": fromName
                     },
-                    "To": {
-                        "Email": "chris@siliconflight.com",
-                    },
+                    "To": [
+                        {
+                            "Email": "chris@siliconflight.com",
+                        }
+                    ],
                     'Subject': "Test From action!",
                     "TextPart": "This is the test content from the action:" + payload
                 }
