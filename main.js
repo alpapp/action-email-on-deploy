@@ -34,13 +34,15 @@ async function main() {
 
         // const semverRegex = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
         const appCommitString = (await execShellCommand('git log -1 --format=%s')).trim()
-        console.log('appCommitString is ' + appCommitString)
+        console.log('appCommitString is ' + appCommitString + '/' + github.event.head_commit.message)
+
+        console.dir(github.event, {depth: null})
         
         
+        
 
-
-        /*
-
+        
+/*
 
         const pathToPackageJson = core.getInput("path_to_package_json")
         const mjPublic = core.getInput("mailjet_public", { required: true })
@@ -103,7 +105,10 @@ async function main() {
             // can't do anything about it, tough
             console.log('error sending email', emailData, err)
             console.dir(emailData, {depth: null})
-        }*/
+        }
+
+*/
+
 
     } catch (error) {
         core.setFailed(error.message)
