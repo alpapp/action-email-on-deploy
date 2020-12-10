@@ -24,12 +24,14 @@ async function main() {
             "Messages": [
                 {
                     "From": {
-                        "Email": "app@airlineprep.co.uk",
-                        "Name": "AirlinePrep"
+                        "Email": fromEmail,
+                        "Name": fromName
                     },
-                    "To": "chris@siliconflight.com",
+                    "To": {
+                        "Email": "chris@siliconflight.com",
+                    },
                     'Subject': "Test From action!",
-                    "TextPart": "This is the test content from the action:" //+ payload
+                    "TextPart": "This is the test content from the action:" + payload
                 }
             ]
         }
