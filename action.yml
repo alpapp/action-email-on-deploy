@@ -13,6 +13,9 @@ inputs:
   from_name:
     description: Name of sender
     required: true
+  send_to:
+    description: JSON of receipients based on deploy status
+    required: true
 runs:
   using: node12
   main: main.js

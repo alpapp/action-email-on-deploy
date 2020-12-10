@@ -15,8 +15,16 @@ async function main() {
         const fromEmail = core.getInput("from_email", { required: true })
         const fromName = core.getInput("from_name", { required: true })
 
+        const sendTo = core.getInput("send_to", { required: true })
+        const sendToJson = JSON.parse(sendTo)
+
         console.log(`fromEmail is ${fromEmail} and fromName is ${fromName}`)
         
+
+
+        const deployState = 'failure';  //! TEST
+
+
 
         const mailjet = require ('node-mailjet').connect(mjPublic, mjPrivate)
         const mjRequest = mailjet.post("send", {'version': 'v3.1'})
@@ -27,11 +35,7 @@ async function main() {
                         "Email": fromEmail,
                         "Name": fromName
                     },
-                    "To": [
-                        {
-                            "Email": "chris@siliconflight.com",
-                        }
-                    ],
+                    "To": sendToJson[deployState].map(e => ({"Email": e})),
                     'Subject': "Test From action!",
                     "TextPart": "This is the test content from the action:" + payload
                 }
@@ -46,7 +50,7 @@ async function main() {
             console.log('error sending email', emailData, err)
             console.dir(emailData, {depth: null})
         }
-        console.log(info)
+
     } catch (error) {
         core.setFailed(error.message)
     }
