@@ -1,10 +1,10 @@
 name: Email on deploy
 description: Send email on deploy success or failure
 inputs:
-  mjPublic:
+  mailjet_public:
     description: Mailjet Public Key
     required: true
-  mjPrivate:
+  mailjet_private:
     description: Mailjet Private Key
     required: true
   from_email:
