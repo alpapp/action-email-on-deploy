@@ -8,29 +8,35 @@ async function main() {
 
         // Get the JSON webhook payload for the event that triggered the workflow
         const payload = JSON.stringify(github.context.payload, undefined, 2)
-        console.log('payload is ', payload)
+        // console.log('payload is ', payload)
 
 
 
         const pathToPackageJson = core.getInput("path_to_package_json")
         const mjPublic = core.getInput("mailjet_public", { required: true })
         const mjPrivate = core.getInput("mailjet_private", { required: true })
-        const fromEmail = core.getInput("from_email", { required: true })
-        const fromName = core.getInput("from_name", { required: true })
-
-        const sendTo = core.getInput("send_to", { required: true })
-        const sendToJson = JSON.parse(sendTo)
-
-        console.log(`fromEmail is ${fromEmail} and fromName is ${fromName}`)
+        // const fromEmail = core.getInput("from_email", { required: true })
+        // const fromName = core.getInput("from_name", { required: true })
+        // const sendTo = core.getInput("send_to", { required: true })
+        // const sendToJson = JSON.parse(sendTo)
+        // console.log(`fromEmail is ${fromEmail} and fromName is ${fromName}`)
         
 
 
         const deployState = 'failure';  //! TEST
+        const deployedVersion = '1.x.x';
 
 
+        const emailRegex = /(?:"?([^"]*)"?\s)?(?:<?(.+@[^>]+)>?)/;
 
         // get package.json of the calling repo, to get the description of the project
-        const filePackageDotJson = fs.readFileSync(pathToPackageJson, "utf8")
+        const filePackageDotJson = JSON.parse(fs.readFileSync(pathToPackageJson, "utf8"))
+
+        // extract email_on_deploy: from, success & failure arrays
+        const eodParams = filePackageDotJson.email_on_deploy
+        const [rest, fromName, fromEmail] = emailRegex.exec(eodParams.from)
+
+        //
 
 
 
@@ -43,9 +49,19 @@ async function main() {
                         "Email": fromEmail,
                         "Name": fromName
                     },
-                    "To": sendToJson[deployState].map(e => ({"Email": e})),
-                    'Subject': "Test From action!",
-                    "TextPart": "This is the test content from the action:" + filePackageDotJson
+                    "To": eodParams[deployState].map(e => {
+                        const emailSplit = emailRegex.exec(e)
+                        return {
+                            "Email": emailSplit[2],
+                            "Name": emailSplit[1]
+                        }
+                    }),
+                    'Subject': deployState == 'success' ? `New Version of ${filePackageDotJson.description} [v${deployedVersion}] now live` : `FAILED deployment for ${filePackageDotJson.description} ${deployedVersion}`,
+                    "TextPart": deployState == 'success' ? `
+                        Version ${deployedVersion} of ${filePackageDotJson.description} has been successfully deployed at XXXX and is now live to use.
+                    ` : `
+                        FAILED to deploy version ${deployedVersion} of ${filePackageDotJson.description}.  Check for errors in build log.  Previously deployed version remains the current live version.
+                    `,
                 }
             ]
         }
