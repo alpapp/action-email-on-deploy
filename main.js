@@ -12,6 +12,12 @@ async function main() {
 
 
 
+        console.dir(process.env)
+
+
+        /*
+
+
         const pathToPackageJson = core.getInput("path_to_package_json")
         const mjPublic = core.getInput("mailjet_public", { required: true })
         const mjPrivate = core.getInput("mailjet_private", { required: true })
@@ -73,7 +79,7 @@ async function main() {
             // can't do anything about it, tough
             console.log('error sending email', emailData, err)
             console.dir(emailData, {depth: null})
-        }
+        }*/
 
     } catch (error) {
         core.setFailed(error.message)
