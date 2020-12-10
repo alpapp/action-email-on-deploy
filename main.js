@@ -20,29 +20,30 @@ async function main() {
     try {
 
         // Get the JSON webhook payload for the event that triggered the workflow
-        const payload = JSON.stringify(github.context.payload, undefined, 2)
+        // const payloadString = JSON.stringify(github.context.payload, undefined, 2)
+        const payload = github.context.payload
         // console.log('payload is ', payload)
 
 
 
         console.dir(process.env)
-        console.dir(JSON.parse(payload), {depth: null})
+        console.dir(payload, {depth: null})
 
 
         // const latestCommitMessage = core.getInput("commit_message")
         // console.log('latest commit message is ' + latestCommitMessage)
 
         // const semverRegex = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
-        const appCommitString = (await execShellCommand('git log -1 --format=%s')).trim()
-        console.log('appCommitString is ' + appCommitString)
+        const deployedVersion = (await execShellCommand('git log -1 --format=%s')).trim()
+        console.log('deployedVersion is ' + deployedVersion)
 
-        console.dir(github.context, {depth: null})
+        // console.dir(github.context, {depth: null})
         
         
         
 
         
-/*
+
 
         const pathToPackageJson = core.getInput("path_to_package_json")
         const mjPublic = core.getInput("mailjet_public", { required: true })
@@ -55,8 +56,8 @@ async function main() {
         
 
 
-        const deployState = 'failure';  //! TEST
-        const deployedVersion = '1.x.x';
+        const deployState = payload.deployment_status.state;
+       
 
 
         const emailRegex = /(?:"?([^"]*)"?\s)?(?:<?(.+@[^>]+)>?)/;
@@ -70,6 +71,9 @@ async function main() {
 
         //
 
+
+
+        payload.deployment_status.updated_at_asDate = new Date(payload.deployment_status.updated_at).toUTCString()
 
 
         const mailjet = require ('node-mailjet').connect(mjPublic, mjPrivate)
@@ -90,7 +94,7 @@ async function main() {
                     }),
                     'Subject': deployState == 'success' ? `New Version of ${filePackageDotJson.description} [v${deployedVersion}] now live` : `FAILED deployment for ${filePackageDotJson.description} ${deployedVersion}`,
                     "TextPart": deployState == 'success' ? `
-                        Version ${deployedVersion} of ${filePackageDotJson.description} has been successfully deployed at XXXX and is now live to use.
+                        Version ${deployedVersion} of ${filePackageDotJson.description} has been successfully deployed at ${payload.deployment_status.updated_at_asDate} and is now live to use.
                     ` : `
                         FAILED to deploy version ${deployedVersion} of ${filePackageDotJson.description}.  Check for errors in build log.  Previously deployed version remains the current live version.
                     `,
@@ -107,7 +111,7 @@ async function main() {
             console.dir(emailData, {depth: null})
         }
 
-*/
+
 
 
     } catch (error) {
