@@ -107,6 +107,14 @@ async function main() {
                     ` : `
                         FAILED to deploy version ${deployedVersion} of ${filePackageDotJson.description}.  Check for errors in build log.  Previously deployed version remains the current live version.
                     `,
+                    HTMLPart: deployState == 'success' ? 
+`
+${filePackageDotJson.description} version <b>${deployedVersion} (${deployedEnvironment})</b> has been successfully deployed on ${payload.deployment_status.updated_at_asDate} and is now live to use.
+` 
+: 
+`
+<b>FAILED to deploy</b> version ${deployedVersion} of ${filePackageDotJson.description}.  Check for errors in build log.  Previously deployed version remains the current live version.
+`,
                 }
             ]
         }
