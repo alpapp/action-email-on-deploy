@@ -13,6 +13,7 @@ async function main() {
 
 
         console.dir(process.env)
+        console.dir(JSON.parse(payload), {depth: null})
 
 
         /*
