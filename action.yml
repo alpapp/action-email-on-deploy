@@ -4,8 +4,6 @@ inputs:
   path_to_package_json:
     description: Path to package.json file in repo
     default: './package.json'
-  commit_message:
-    default: ${{ github.event.head_commit.message }}
   mailjet_public:
     description: Mailjet Public Key
     required: true
