@@ -16,6 +16,11 @@ async function main() {
         console.dir(JSON.parse(payload), {depth: null})
 
 
+        const latestCommitMessage = core.getInput("commit_message")
+        console.log('latest commit message is ' + latestCommitMessage)
+        
+
+
         /*
 
 
